@@ -1,4 +1,5 @@
-﻿using commerceApplication.Models;
+﻿using commerceApplication.Data.ViewModels;
+using commerceApplication.Models;
 using static commerceApplication.Data.Base.IEntityBaseRepository;
 
 namespace commerceApplication.Data.Services
@@ -6,5 +7,8 @@ namespace commerceApplication.Data.Services
     public interface IMoviesService : IEntityBaseRepository<Movie>
     {
         Task<Movie> GetMovieByIdAsync(int id);
+        Task<NewMovieDropdownsVM> GetNewMovieDropdownsValues();
+        Task AddNewMovieAsync(NewMovieVM data);
+        Task UpdateMovieAsync(NewMovieVM data);
     }
 }
