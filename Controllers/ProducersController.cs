@@ -1,11 +1,14 @@
 ﻿using commerceApplication.Data;
 using commerceApplication.Data.Services;
+using commerceApplication.Data.Static;
 using commerceApplication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace commerceApplication.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class ProducersController : Controller
     {
         private readonly IProducersService _service;

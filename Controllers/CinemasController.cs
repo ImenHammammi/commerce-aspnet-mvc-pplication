@@ -1,11 +1,14 @@
 ﻿using commerceApplication.Data;
 using commerceApplication.Data.Services;
+using commerceApplication.Data.Static;
 using commerceApplication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace commerceApplication.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class CinemasController : Controller
     {
         private readonly ICinemasService _service;
@@ -14,7 +17,7 @@ namespace commerceApplication.Controllers
         {
             _service = service;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var allCinemas = await _service.GetAllAsync();
@@ -35,7 +38,7 @@ namespace commerceApplication.Controllers
             await _service.AddAsync(cinema);
             return RedirectToAction(nameof(Index));
         }
-
+        [AllowAnonymous]
         //Get: Cinemas/Details/1
         public async Task<IActionResult> Details(int id)
         {

@@ -1,19 +1,23 @@
 ﻿using commerceApplication.Data;
 using commerceApplication.Data.Services;
+using commerceApplication.Data.Static;
 using commerceApplication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace commerceApplication.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class ActorsController : Controller
     {
+      
         private readonly IActorsService _service;
 
         public ActorsController(IActorsService service)
         {
             _service = service;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var data = await _service.GetAllAsync();
@@ -37,6 +41,7 @@ namespace commerceApplication.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [AllowAnonymous]
         //Get: Actors/Details/1
         public async Task<IActionResult> Details(int id)
         {

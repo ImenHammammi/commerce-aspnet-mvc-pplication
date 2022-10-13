@@ -1,12 +1,16 @@
 ﻿using commerceApplication.Data;
 using commerceApplication.Data.Services;
+using commerceApplication.Data.Static;
 using commerceApplication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace commerceApplication.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
+
     public class MoviesController : Controller
     {
         private readonly IMoviesService _service;
@@ -15,26 +19,26 @@ namespace commerceApplication.Controllers
         {
             _service = service;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var allMovies = await _service.GetAllAsync(n => n.Cinema);
             return View(allMovies);
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Filter(string searchString)
         {
             var allMovies = await _service.GetAllAsync(n => n.Cinema);
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                var filteredResult = allMovies.Where(n => n.Name.Contains(searchString) || n.Description.Contains(searchString)).ToList();
+                var filteredResult = allMovies.Where(n => n.Name.ToLower().Contains(searchString.ToLower()) || n.Description.ToLower().Contains(searchString.ToLower())).ToList();
                 return View("Index", filteredResult);
             }
 
             return View("Index", allMovies);
         }
-
+        [AllowAnonymous]
         //GET: Movies/Details/1
         public async Task<IActionResult> Details(int id)
         {
